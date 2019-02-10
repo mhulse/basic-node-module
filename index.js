@@ -1,83 +1,90 @@
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs-extra'); // Using `fs-extra` we can utilize `async` and `await`.
 
-const html = (__dirname + '/temp.html');
+const BasicNodeModule = (function() {
 
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes
-class BasicNodeModule {
+  const html = (__dirname + '/temp.html');
+  const defaults = {
+    red: 'red',
+    green: 'green',
+    orange: 'orange',
+  };
 
-  constructor(options = {}) {
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes
+  class BasicNodeModule {
 
-    this.defaults = {
-      red: 'red',
-      green: 'green'
-    };
+    // Singleton pattern:
+    constructor(options = {}) {
 
-    if ( ! BasicNodeModule.instance) {
+      if ( ! BasicNodeModule.instance) {
 
-      BasicNodeModule.instance = this;
+        BasicNodeModule.instance = this;
+
+      }
+
+      // Save initial options:
+      this.options = options;
+
+      return BasicNodeModule.instance;
 
     }
 
-    this.defaults = {
-      ...this.defaults,
-      ...options
-    };
+    static init(options = {}) {
 
-    return BasicNodeModule.instance;
+      const instance = new BasicNodeModule();
 
-  }
+      // Create a new shallow copy using Object Spread Params (last one in wins):
+      instance.options = {
+        ...defaults,
+        ...instance.options,
+        ...options,
+      };
 
-  static of(options) {
+      return instance;
 
-    const basicNodeModule = new BasicNodeModule();
+    }
 
-    basicNodeModule.defaults = {
-      ...basicNodeModule.defaults,
-      ...options
-    };
+    async run() {
 
-    console.log(basicNodeModule.defaults)
+      // console.log('options:', this.options);
 
-    return basicNodeModule;
+      if (this.options.orange == 'orange') {
 
-  }
+        // Instead of using `writeFile().then()`, use await:
+        await fs.writeFile(html, 'Hello world!', 'utf8');
 
-  async run() {
+        let result = await fs.readFile(html, 'utf8');
 
-    //console.log('ddd', this.options);
+        await fs.unlink(html);
 
-    // console.log(options);
-    //
-    // if (options.foo && options.bar) {
-    //
-    //   await fs.writeFile(html, 'Hello world!', 'utf8');
-    //
-    //   let result = await fs.readFile(html, 'utf8');
-    //
-    //   await fs.unlink(html);
-    //
-    //   return result;
-    //
-    // } else {
-    //
-    //   throw new Error('missing foo AND bar');
-    //
-    // }
+        // Resolve this async function with the result:
+        return result;
+
+      } else {
+
+        throw new Error(`Orange isn’t orange, it’s ${this.options.orange}!`);
+
+      }
+
+    }
 
   }
 
-}
+  return BasicNodeModule;
+
+}());
 
 // These options come from `require()({ … options … })` syntax:
 module.exports = (options = {}) => {
 
+  // If passed, instanciate class and pass options:
   if (Object.entries(options).length) {
 
     new BasicNodeModule(options);
 
   }
 
-  return BasicNodeModule.of
+  // Return the `init` method:
+  return BasicNodeModule.init
 
 };

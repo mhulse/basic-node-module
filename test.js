@@ -1,32 +1,27 @@
 const bnm = require('./index')({
   // Options can be passed here:
-  red: 'black'
+  red: 'black',
+  green: 'purple',
 });
 
 (async function start() {
 
-  let foo = bnm({
-    green: 'purple'
-  }).run();
+  console.log('before');
 
-//   console.log('before');
-//
-//   const options = {
-//     bar: 'bar'
-//   };
-//
-//   try {
-//
-//     let result = await bnm(options);
-//
-//     console.log(result);
-//
-//   } catch(err) {
-//
-//     console.log(err);
-//
-//   }
-//
-//   console.log('after');
+  try {
+
+    let result = await bnm({
+      // orange: 'blue',
+    }).run();
+
+    console.log(result);
+
+  } catch(err) {
+
+    console.dir(err);
+
+  }
+
+  console.log('after');
 
 })();
