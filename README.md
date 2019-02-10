@@ -5,7 +5,7 @@ Just experimenting with ECMAScript 2018 async/await class-based Node.js module.
 ## Installation
 
 ```bash
-$ bash <(curl -sL https://git.io/vXzDy)
+$ bash <(curl -sL https://git.io/fhH5H)
 ```
 
 ## Usage
