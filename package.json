@@ -1,9 +1,13 @@
 {
-  "name": "rand-steet-view",
-  "version": "1.0.0",
+  "name": "",
+  "version": "",
   "description": "",
-  "author": "Michael Hulse",
-  "license": "Apache-2.0",
+  "author": "",
+  "license": {
+    "//": "https://spdx.org/licenses/",
+    "type": "",
+    "url": ""
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

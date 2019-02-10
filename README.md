@@ -24,7 +24,7 @@ Feel free to wipe everything in [`index.js`](index.js) and start fresh … I jus
 
 ## Notes
 
-I wanted to have the option of passing params via `require` and method invocation:
+I wanted to have the option of passing params via `require` **AND** method invocation:
 
 ```js
 const bnm = require('./index')({
